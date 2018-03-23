@@ -82,9 +82,9 @@ class MyTest {
 			controller = new CrawlController(config, pageFetcher, robotstxtServer);
 			controller.addSeed(forbiddenLink);    
 			controller.start(MyCrawler.class, 1); 
-			datas = controller.getCrawlersLocalData();
+			datas = controller.getCrawlersLocalData(); 
 
-			if (datas.size()!=0)
+			if (!datas.isEmpty())
 			{
 				noForbiddenLinks = false;
 				message = "Forbidden URL: " + forbiddenLink;
