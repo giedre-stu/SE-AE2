@@ -9,6 +9,7 @@ import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
+import edu.uci.ics.crawler4j.parser.TextParseData;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
@@ -51,7 +52,7 @@ class MyTest {
 
 		HtmlParseData testHtmlParseData = new HtmlParseData();
 		testHtmlParseData.setHtml(testString);
-		assertEquals(testString,testHtmlParseData);
+		assertEquals(testString,testHtmlParseData.getHtml());
 	}
 
 	/** 
@@ -63,7 +64,7 @@ class MyTest {
 	public void noOutgoingLinksLimitError() 
 	{
 		config.setMaxOutgoingLinksToFollow(MAX_LINKS);
-		assertEquals(config.getMaxOutgoingLinksToFollow(), MAX_LINKS);
+		assertEquals(MAX_LINKS, config.getMaxOutgoingLinksToFollow());
 	}
 
 	/** 
@@ -75,6 +76,7 @@ class MyTest {
 	public void noForbiddenLinks()
 	{
 		boolean noForbiddenLinks = true;
+		String message = "";
 		String forbiddenLink = "http://www.dcs.gla.ac.uk/~bjorn/sem20172018/ae2private/IDA.html";
 		try {
 			controller = new CrawlController(config, pageFetcher, robotstxtServer);
@@ -85,13 +87,14 @@ class MyTest {
 			if (datas.size()!=0)
 			{
 				noForbiddenLinks = false;
+				message = "Forbidden URL: " + forbiddenLink;
 			}
 		}
 		catch (Exception e) {
 			System.out.println("Unable to extract page data.");
 		}
 
-		assertTrue(noForbiddenLinks);
+		assertTrue(noForbiddenLinks, message);
 	}
 
 
@@ -103,25 +106,10 @@ class MyTest {
 	@Test
 	public void dataIsCorrect() 
 	{
-		//		
-		//			boolean dataIsCorrect = true; 
-		//			
-		//			for (Object data : datas) 
-		//			{
-		//				@SuppressWarnings("unchecked")
-		//				ArrayList<Page> pages = (ArrayList<Page>) data;
-		//				
-		//				for (Page page: pages)
-		//				{	
-		//					if (page.getParseData() instanceof TextParseData) {
-		//						
-		//						
-		//						
-		//					}
-		//				}
-		//			}
-		//			
-		//			assertTrue(dataIsCorrect);
+		String testString = "01011234";
 
+		TextParseData testParseData = new TextParseData();
+		testParseData.setTextContent(testString);
+		assertEquals(testString,testParseData.getTextContent());
 	}
 } 
