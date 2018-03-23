@@ -72,15 +72,15 @@ public class MyCrawlerController {
 	                        HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 	                        String text = htmlParseData.getText();
 	                        String html = htmlParseData.getHtml();
-	                        Set<WebURL> links = htmlParseData.getOutgoingUrls(); 
-	                        
+	                        Set<WebURL> links = htmlParseData.getOutgoingUrls();
+
 	                        System.out.println("--------------------------------------------");
 	                        System.out.println("URL: " + page.getWebURL().toString());
 	                        System.out.println("Text length: " + text.length());
 	                        System.out.println("Html length: " + html.length());	                        
-	                        System.out.println("Number of outgoing links: " + links.size()); 
+	                        System.out.println("Number of outgoing links: " + links.size());
 	                        System.out.println("Content Type: " + page.getContentType());	                       
-	                      //  System.out.println("Page Content as test: " + text);	  
+	                       //  System.out.println("Page Content as test: " + text);	  
 	                        System.out.println("Page Content as html:\n" + html);
 	                        System.out.println("--------------------------------------------");
 	            		} 

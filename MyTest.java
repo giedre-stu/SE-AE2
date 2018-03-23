@@ -1,22 +1,16 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
-import edu.uci.ics.crawler4j.crawler.Page;
-import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
-import edu.uci.ics.crawler4j.parser.TextParseData;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
-import edu.uci.ics.crawler4j.url.WebURL;
 
 class MyTest {
 
@@ -26,97 +20,108 @@ class MyTest {
 	static RobotstxtServer robotstxtServer;
 	static CrawlController controller;
 	static List<Object> datas;
-	
+
 	private static final int MAX_LINKS = 5000;
 
 	@BeforeEach
 	public void setup() throws Exception {
 
-		int numberOfCrawlers = 1; 
 		String crawlStorageFolder = "data/";
 
 		config = new CrawlConfig();
 		config.setCrawlStorageFolder(crawlStorageFolder);
 		config.setIncludeBinaryContentInCrawling(false);
 		config.setMaxDepthOfCrawling(-1); 
-		config.setMaxOutgoingLinksToFollow(MAX_LINKS);
 
 		pageFetcher = new PageFetcher(config);                            
 		robotstxtConfig = new RobotstxtConfig();
 		robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
-
-		controller = new CrawlController(config, pageFetcher, robotstxtServer);
-		controller.addSeed("http://www.dcs.gla.ac.uk/~bjorn/sem20172018/ae2public/Machine_learning.html");    
-		controller.start(MyCrawler.class, numberOfCrawlers); 
-
-		datas = controller.getCrawlersLocalData();
 	}
 
-	//	@Test 
-	//	public void hasUpperCase() 
-	//	{
-	//		boolean hasUpperCase = false;
-	//		boolean originalHasUpperCase = false;
-	//		
-	//		
-	//		
-	//		
-	//		assertTrue(hasUpperCase);
-	//	}
 
-		@Test
+	/** 
+	 * 1) what aspect of the code you are covering (incl. class name) and why
+	 * 2) what inputs/outputs you are testing and why
+	 * 3) what error you think this demonstrates. 
+	 */
+	@Test 
+	public void hasUpperCase() 
+	{
+		String testString = "Tom Sawyer";
+
+		HtmlParseData testHtmlParseData = new HtmlParseData();
+		testHtmlParseData.setHtml(testString);
+		assertEquals(testString,testHtmlParseData);
+	}
+
+	/** 
+	 * 1) what aspect of the code you are covering (incl. class name) and why
+	 * 2) what inputs/outputs you are testing and why
+	 * 3) what error you think this demonstrates. 
+	 */		
+	@Test
 	public void noOutgoingLinksLimitError() 
-		{
-			boolean correctLimit = true;
-			
-			if (config.getMaxOutgoingLinksToFollow()!=MAX_LINKS)
-			{
-				correctLimit=false;
-			}
-			
-			assertTrue(correctLimit);
-		}
+	{
+		config.setMaxOutgoingLinksToFollow(MAX_LINKS);
+		assertEquals(config.getMaxOutgoingLinksToFollow(), MAX_LINKS);
+	}
 
+	/** 
+	 * 1) what aspect of the code you are covering (incl. class name) and why
+	 * 2) what inputs/outputs you are testing and why
+	 * 3) what error you think this demonstrates. 
+	 */
 	@Test
 	public void noForbiddenLinks()
 	{
 		boolean noForbiddenLinks = true;
-		MyCrawler mC = new MyCrawler();
+		String forbiddenLink = "http://www.dcs.gla.ac.uk/~bjorn/sem20172018/ae2private/IDA.html";
+		try {
+			controller = new CrawlController(config, pageFetcher, robotstxtServer);
+			controller.addSeed(forbiddenLink);    
+			controller.start(MyCrawler.class, 1); 
+			datas = controller.getCrawlersLocalData();
 
-		String link = "http://www.dcs.gla.ac.uk/~bjorn/sem20172018/ae2public/";
-		String URL;
-
-		for (Object data : datas) 
-		{
-			try {
-				@SuppressWarnings("unchecked")
-				ArrayList<Page> pages = (ArrayList<Page>) data;
-
-				for (Page page: pages)
-				{	
-					URL = page.getWebURL().toString();
-					
-//					if (!mC.shouldVisit(page, page.getWebURL()))
-//					{
-//						noForbiddenLinks = false;
-//					}
-
-					if (!URL.startsWith(link))
-					{
-						noForbiddenLinks = false;
-					}	
-				}
-			} catch (ClassCastException e) {
-				System.out.println("Unable to extract page data.");
+			if (datas.size()!=0)
+			{
+				noForbiddenLinks = false;
 			}
+		}
+		catch (Exception e) {
+			System.out.println("Unable to extract page data.");
 		}
 
 		assertTrue(noForbiddenLinks);
 	}
 
-	//	@Test
-	//	public void dataIsCorrect() 
-	//	{
-	//
-	//	}
+
+	/** 
+	 * 1) what aspect of the code you are covering (incl. class name) and why
+	 * 2) what inputs/outputs you are testing and why
+	 * 3) what error you think this demonstrates. 
+	 */
+	@Test
+	public void dataIsCorrect() 
+	{
+		//		
+		//			boolean dataIsCorrect = true; 
+		//			
+		//			for (Object data : datas) 
+		//			{
+		//				@SuppressWarnings("unchecked")
+		//				ArrayList<Page> pages = (ArrayList<Page>) data;
+		//				
+		//				for (Page page: pages)
+		//				{	
+		//					if (page.getParseData() instanceof TextParseData) {
+		//						
+		//						
+		//						
+		//					}
+		//				}
+		//			}
+		//			
+		//			assertTrue(dataIsCorrect);
+
+	}
 } 
